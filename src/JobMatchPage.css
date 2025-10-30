@@ -1,0 +1,301 @@
+/* JobMatchPage.css — clean, centered, compact */
+
+/* --- Page background + tokens --- */
+:root {
+  --bg: #0b0d12;
+  --panel: rgba(255,255,255,0.06);
+  --panel-dim: rgba(255,255,255,0.04);
+  --text: #eef2f8;
+  --muted: #aeb7c6;
+  --brand: #7aa2ff;
+  --brand-strong: #5fff9f;
+  --shadow: 0 10px 30px rgba(0,0,0,0.3);
+  --r-lg: 14px;
+  --r-md: 10px;
+}
+
+.jm-page {
+  min-height: 100svh;
+  background:
+    radial-gradient(1000px 500px at 10% 0%, rgba(122,162,255,0.12), transparent 60%),
+    radial-gradient(700px 400px at 90% 10%, rgba(158,255,209,0.08), transparent 50%),
+    var(--bg);
+  color: var(--text);
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+/* --- Header --- */
+.jm-header {
+  width: 100%;
+  padding: 14px 0 6px; /* tighter */
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(180deg, rgba(11,13,18,0.9), rgba(11,13,18,0.55));
+  backdrop-filter: saturate(1.05) blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+/* Inner header content sits centered with the main column */
+.jm-header-inner {
+  width: min(1000px, 92%);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px; /* tighter */
+}
+
+/* Title */
+.jm-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+/* Make the "Back to Dashboard" button fixed at top-right, independent of layout */
+.jm-actions {
+  position: fixed;
+  top: 12px;
+  right: 16px;
+  display: flex;
+  gap: 10px;
+  z-index: 40;
+}
+
+/* --- Buttons --- */
+.jm-link,
+.jm-submit,
+.jm-row-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: var(--r-md);
+  border: 1px solid rgba(237,174,64,0.14);
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+  color: var(--text);
+  background: var(--panel);
+}
+
+.jm-link {
+  background: linear-gradient(135deg, var(--brand-strong), var(--brand));
+  color: #0b0d12;
+  font-weight: 600;
+  border-color: rgba(255,255,255,0.14);
+}
+
+.jm-row-btn.jm-alt {
+  background: linear-gradient(135deg, var(--brand), var(--brand-strong));
+  color: #0b0d12;
+  font-weight: 600;
+}
+
+.jm-link:hover,
+.jm-submit:hover,
+.jm-row-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+/* --- Main column (centered) --- */
+.jm-container {
+  width: min(860px, 92%);
+  margin: 10px auto 24px; /* tighter top/bottom */
+}
+
+/* --- Form --- */
+.jm-form {
+  display: grid;
+  gap: 8px;           /* tighter spacing: label -> textarea -> button */
+  margin: 0 0 12px;   /* tighter */
+}
+
+.jm-label {
+  font-weight: 600;
+  margin: 0;
+}
+
+.jm-textarea {
+  width: 90%;
+  height: 180px;      /* shorter */
+  resize: vertical;
+  padding: 12px;      /* tighter */
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(255,255,255,0.10);
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.04));
+  color: var(--text);
+  outline: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.jm-textarea::placeholder { color: var(--muted); }
+.jm-textarea:focus { border-color: rgba(255,255,255,0.18); box-shadow: var(--shadow); }
+
+/* Submit button: small, neat, never clipped */
+.jm-submit {
+  justify-self: start;
+  width: auto;
+  padding: 6px 10px;   /* smaller */
+  font-size: 13px;     /* slightly smaller */
+  line-height: 1.1;
+  background: linear-gradient(135deg, var(--brand-strong), var(--brand));
+  color: #0b0d12;
+  font-weight: 600;
+  border-color: rgba(255,255,255,0.14);
+}
+.jm-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* --- Status blocks --- */
+.jm-warning {
+  background: linear-gradient(180deg, rgba(255,184,107,0.16), rgba(255,184,107,0.10));
+  color: #ffd9a8;
+  border: 1px solid rgba(255,184,107,0.35);
+  padding: 8px 10px;  /* tighter */
+  border-radius: var(--r-md);
+}
+
+.jm-error {
+  background: linear-gradient(180deg, rgba(255,107,107,0.16), rgba(255,107,107,0.10));
+  color: #ffb3b3;
+  border: 1px solid rgba(255,107,107,0.35);
+  padding: 8px 10px;  /* tighter */
+  border-radius: var(--r-md);
+  margin: 8px 0;      /* tighter */
+}
+
+/* --- Extracted sections --- */
+.jm-extracted { margin-top: 12px; }          /* tighter */
+.jm-extracted > h2 { margin: 0 0 8px; }      /* tighter */
+
+.jm-extracted-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;                                   /* tighter */
+}
+
+.jm-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--r-lg);
+  padding: 12px;                                /* tighter */
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+}
+.jm-card h3 { margin: 0 0 6px; }
+.jm-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.16); box-shadow: var(--shadow); }
+
+.jm-pre {
+  white-space: pre-wrap;
+  color: var(--text);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+/* --- Score table --- */
+.jm-scores { margin-top: 14px; }              /* tighter */
+.jm-scores > h2 { margin: 0 0 8px; }          /* tighter */
+
+.jm-table-wrap {
+  overflow: auto;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--r-lg);
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.04));
+}
+.jm-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text);
+}
+.jm-table thead th {
+  text-align: left;
+  font-weight: 600;
+  background: rgba(255,255,255,0.04);
+}
+.jm-table th, .jm-table td {
+  padding: 10px 12px;                          /* tighter */
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.jm-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+.jm-row-btn {
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: var(--r-md);
+}
+
+/* --- Best match viewer --- */
+.jm-best { margin-top: 14px; }                /* tighter */
+
+.jm-best-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;                                   /* tighter */
+  margin-bottom: 8px;                          /* tighter */
+}
+.jm-best-head h2 { margin: 0; }
+
+.jm-best-cta { display: flex; gap: 8px; }
+
+.jm-viewer {
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.04));
+  min-height: 360px;                           /* shorter */
+}
+.jm-pdf { width: 100%; height: 70vh; border: none; } /* shorter */
+
+.jm-viewer-fallback {
+  padding: 16px;                               /* tighter */
+  color: var(--muted);
+}
+
+/* If there is no .jm-header-inner in JSX, center the title area anyway */
+.jm-header > .jm-title { 
+  width: min(1000px, 92%);
+  margin: 0 auto;
+  display: block;
+}
+
+/* Page spacing: tighten everything a bit */
+.page { padding: 12px; }        /* tighter */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;                     /* tighter */
+}
+
+/* Title */
+.page h1, .page h2, .page h3 { margin: 0 0 6px; }  /* tighter */
+
+/* Textarea block */
+.jobdesc {
+  height: 180px;                /* shorter */
+  padding: 10px;                /* tighter */
+  margin: 0;
+}
+
+/* Bottom action button: smaller, tighter offset */
+.fab {
+  position: fixed;
+  left: 12px;                   /* tighter offset */
+  bottom: 12px;                 /* tighter offset */
+  width: 104px;                 /* smaller */
+  height: 34px;                 /* smaller */
+  padding: 5px 10px;            /* smaller */
+  border-radius: 8px;           /* slightly less rounded */
+  font-size: 0.85rem;           /* smaller text */
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(0,0,0,.25);
+}
+
+/* If your gradient button had huge inner gaps via ::before, kill them */
+.fab::before, .fab::after { margin: 0; padding: 0; }
+
+/* Optional: tighten any section wrappers that had extra space */
+.section { margin: 6px 0; }
