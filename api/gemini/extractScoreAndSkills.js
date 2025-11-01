@@ -78,7 +78,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json(result);
     } catch (err) {
-        return res.status(500).json({ error: "Gemini call failed" })
+        return res.status(501).json({ error: "Gemini call failed" })
     }
 
 }
