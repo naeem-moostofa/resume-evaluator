@@ -1,6 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
 
-
 const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
 export default async function handler(req, res) {
@@ -84,5 +83,3 @@ export default async function handler(req, res) {
     }
 
 }
-
-// method, file, SYSTEM_INSTRUCTION_SCORE, RESPONSE_SCHEMA_SCORE, SYSTEM_INSTRUCTION_SKILLS, RESPONSE_SCHEMA_SKILLS
