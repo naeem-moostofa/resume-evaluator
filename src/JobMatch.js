@@ -1,12 +1,7 @@
 import { useState } from "react";
 import { supabase } from "./supabaseClient";
 import "./JobMatchPage.css";
-import { GoogleGenAI } from "@google/genai";
 import { useNavigate } from "react-router-dom";
-
-const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-
-const ai = new GoogleGenAI({ apiKey });
 
 const RESPONSE_SCHEMA_SKILLS = {
     type: "object",
@@ -70,30 +65,20 @@ const extractSections = async (jdText) => {
       ${jdText}
       `.trim();
 
-  const response  = await ai.models.generateContent({
-    model : "gemini-2.5-flash",
-    systemInstruction: "Extract three fields and return STRICT JSON with keys: 'skills_text', 'past_experience_text', 'education_text'",
-    
-    contents : [
-      {
-        role: "user",
-        parts : [{text : prompt}]
-      }
-    ],
-    
-    generationConfig: {
-      responseSchema : RESPONSE_SCHEMA_SKILLS,
-      responseMimeType : "application/json",
-      temperature: 0.2,
-      topK: 32
-    }
-  });
-  console.log(response.text);
-  const cleanedText = response.text.replace(/^\s*```(?:json)?\s*|\s*```\s*$/g, '').trim();
-  console.log(cleanedText);
-  const responseJSON = JSON.parse(cleanedText);
 
-  return responseJSON;
+  const body = {
+    prompt: prompt,
+    RESPONSE_SCHEMA_SKILLS: RESPONSE_SCHEMA_SKILLS
+  } 
+
+  const res = await fetch("/api/gemini/extractSkills", {
+    method: "POST",
+    headers: {"Content-Type" : "application/json"},
+    body: JSON.stringify(body)
+  })
+
+  const resultJSON = await res.json();
+  return resultJSON;
 }
 
 const signedPdfUrl = async (file_path) => {
@@ -106,30 +91,48 @@ const signedPdfUrl = async (file_path) => {
   return data?.signedUrl || null;
 }
 
-const embedSkills = async (skillJson) => {
+// const embedSkills = async (skillJson) => {
 
-  console.log(skillJson)
+//   console.log(skillJson)
 
-  const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
+//   const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
 
-  const ai = new GoogleGenAI({ apiKey });
+//   const ai = new GoogleGenAI({ apiKey });
 
-  const contents = [skillJson["skills_text"], skillJson["past_experience_text"], skillJson["education_text"]];
-  console.log(contents);
-  console.log(ai);
+//   const contents = [skillJson["skills_text"], skillJson["past_experience_text"], skillJson["education_text"]];
+//   console.log(contents);
+//   console.log(ai);
 
-  const result = await ai.models.embedContent({
-      model: "gemini-embedding-001",
-      contents,
-      taskType: "SEMANTIC_SIMILARITY",
-      outputDimensionality: 768
-  })
+//   const result = await ai.models.embedContent({
+//       model: "gemini-embedding-001",
+//       contents,
+//       taskType: "SEMANTIC_SIMILARITY",
+//       outputDimensionality: 768
+//   })
 
-  const [ skills_vec, experience_vec, education_vec ] = (result.embeddings).map((e) => e.values);
+//   const [ skills_vec, experience_vec, education_vec ] = (result.embeddings).map((e) => e.values);
 
-  return [    Array.from(skills_vec),
-              Array.from(experience_vec),
-              Array.from(education_vec) ]; 
+//   return [    Array.from(skills_vec),
+//               Array.from(experience_vec),
+//               Array.from(education_vec) ]; 
+// }
+
+const embedSkills = async (skillsJson) => {
+  const body = {
+      skillsJson
+  }
+
+  const res = await fetch("/api/gemini/embedSkills", {
+      method: "POST",
+      headers: {"Content-Type" : "application/json"},
+      body: JSON.stringify(body)
+  }) 
+
+  const resultArray = await res.json(); 
+
+  console.log(resultArray);
+
+  return resultArray;
 }
 
 const JobMatch = ({session}) => {

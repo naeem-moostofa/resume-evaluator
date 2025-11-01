@@ -225,7 +225,7 @@ const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) =>
         }
 
         if (!(file instanceof Blob)) {
-            setError("Selected item isn’t a real file. Please pick a PDF.");
+            setError("Selected item isn't a real file. Please pick a PDF.");
             return;
         }
 
@@ -274,7 +274,6 @@ const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) =>
             if (insertError) {
                 throw insertError;
             }
-
 
             const body = {
                 SYSTEM_INSTRUCTION_SCORE: SYSTEM_INSTRUCTION_SCORE,

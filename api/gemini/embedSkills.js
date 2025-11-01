@@ -5,16 +5,12 @@ const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 export default async function handler(req, res) {
     try {
         const skillsJSON = req.body.skillsJson;
-        // console.log(skillsJSON);
 
         if (req.method !== "POST") {
             return res.status(405).json({error : "Method not allowed"});
         }
 
         const contents = [skillsJSON.skills_text, skillsJSON.past_experience_text, skillsJSON.education_text];
-
-        console.log("Contents:");
-        console.log(contents);
 
         const ai_embed = await ai.models.embedContent({
             model: "gemini-embedding-001",
