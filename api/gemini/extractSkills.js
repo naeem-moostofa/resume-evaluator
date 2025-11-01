@@ -1,9 +1,9 @@
-import { GoogleGenAI } from "@google/genai";
-
-const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
-
 export default async function handler(req, res) {
     try {
+        const { GoogleGenAI } = await import("@google/genai"); 
+        const apiKey = process.env.GEMINI_API_KEY;
+        const ai = new GoogleGenAI({ apiKey });
+
         const { prompt, RESPONSE_SCHEMA_SKILLS } = req.body;
 
         if (req.method !== "POST") {

@@ -1,10 +1,12 @@
-import { GoogleGenAI } from "@google/genai";
-
-const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
-
 export default async function handler(req, res) {
     try {
+        const { GoogleGenAI } = await import("@google/genai"); 
+        const apiKey = process.env.GEMINI_API_KEY;
+        const ai = new GoogleGenAI({ apiKey });
+
         const skillsJSON = req.body.skillsJson;
+
+        // console.log(skillsJSON);
 
         if (req.method !== "POST") {
             return res.status(405).json({error : "Method not allowed"});
