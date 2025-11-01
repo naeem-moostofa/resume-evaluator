@@ -187,17 +187,22 @@ const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) =>
         .replace(/^-+|-+$/g,"");
     }
 
-    const embedSkills = async (skillJson) => {
+    const fileToBase64 = async (file) => {
+    
+        const buf = await file.arrayBuffer();
+        let bin = "";
+        const bytes = new Uint8Array(buf);
+        for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+        return btoa(bin); // returns base64 string WITHOUT "data:...;base64," prefix
+    }
 
-        console.log(skillJson)
+    const embedSkills = async (skillJson) => {
 
         const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
 
         const ai = new GoogleGenAI({ apiKey });
 
         const contents = [skillJson["skills_text"], skillJson["past_experience_text"], skillJson["education_text"]];
-        console.log(contents);
-        console.log(ai);
 
         const result = await ai.models.embedContent({
             model: "gemini-embedding-001",
@@ -216,6 +221,10 @@ const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) =>
     const onFileChosen = async (e) => {
         const file = e.target.files?.[0];
         e.target.value = "";
+
+        const base64pdf = await fileToBase64(file);
+
+        // console.log(base64pdf);
 
         if (!file) {
             return
@@ -272,92 +281,35 @@ const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) =>
                 throw insertError;
             }
 
-            //setResumes((prev) => [inserted, ...prev]);
+            const body = {
+                SYSTEM_INSTRUCTION_SCORE: SYSTEM_INSTRUCTION_SCORE,
+                RESPONSE_SCHEMA_SCORE: RESPONSE_SCHEMA_SCORE,
+                SYSTEM_INSTRUCTION_SKILLS: SYSTEM_INSTRUCTION_SKILLS,
+                RESPONSE_SCHEMA_SKILLS: RESPONSE_SCHEMA_SKILLS,
+                fileType: file.type || "application/pdf",
+                base64pdf
+            };
 
-            // use gemini to evaluate the resume 
-
-            const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-
-            const ai = new GoogleGenAI({ apiKey });
-
-            const uploaded = await ai.files.upload({
-                file,                                   // MUST be a real File/Blob
-                mimeType: file.type || "application/pdf",
-                displayName: clean(file.name || "resume.pdf"),
+            const res = await fetch("/api/gemini/extractScoreAndSkills", {
+                method: "POST",
+                headers: {"Content-Type" : "application/json"},
+                body: JSON.stringify(body)
             });
-            // console.log(uploaded);
-            const fileUri = uploaded?.uri; 
-            // console.log(fileUri);
 
-            if (!fileUri) {
-                throw new Error("Failed to upload PDF to Gemini");
+            const res_JSON = await res.json();
+
+            const scoreJSON = res_JSON.score;
+            const skillsJSON = res_JSON.skills; 
+
+            console.log(scoreJSON);
+            console.log(skillsJSON);
+
+            if (!res.ok) {
+                throw new Error("API Error");
             }
-
-            const response_score = await ai.models.generateContent({
-                model : "gemini-2.5-flash",
-                systemInstruction : SYSTEM_INSTRUCTION_SCORE,
-                contents : [
-                    {
-                        role : "user",
-                        parts : [
-                            { fileData : { fileUri, mimeType : "application/pdf" } },
-                            { text: "From the attached PDF resume, output a SINGLE JSON object exactly matching the schema." }
-
-                        ]
-                    }
-                ],
-                config : {
-                    responseMimeType : "application/json",
-                    responseSchema : RESPONSE_SCHEMA_SCORE,
-                    temperature: 0.2,
-                    topK: 32
-                }
-            });
-
-            const response_skills = await ai.models.generateContent({
-                model : "gemini-2.5-flash",
-                systemInstruction : SYSTEM_INSTRUCTION_SKILLS,
-                contents : [
-                    {
-                        role : "user",
-                        parts : [
-                            { fileData : { fileUri, mimeType : "application/pdf" } },
-                            { text: "From the attached PDF resume, output a single JSON object which contains the key information in the resume" }
-
-                        ]
-                    }
-                ],
-                config : {
-                    responseMimeType : "application/json",
-                    responseSchema : RESPONSE_SCHEMA_SKILLS,
-                    temperature: 0.2,
-                    topK: 32
-                }
-            });
-
-            console.log(JSON.parse(response_skills.text));
-
-            let scoreJSON = null;
-            let skillsJSON = null;
-
-            try {
-                scoreJSON = JSON.parse(response_score.text);
-                skillsJSON = JSON.parse(response_skills.text);
-            } catch (parseError) {
-                throw new Error("Model did not return valid JSON");
-            }
-
-            // console.log(skillsJSON["skills_text"]);
 
             const embeddedSkills = await embedSkills(skillsJSON);
-            console.log("reached");
-            console.log(embeddedSkills);
-            console.log(embeddedSkills[0]);
-            console.log(embeddedSkills[1]);
-            console.log(embeddedSkills[2]);
-
-            console.log(embeddedSkills);
-
+     
             const { data : updated, error : updateError } = await supabase.from("Resumes")
                 .update({
                     analysis_status : "complete",
