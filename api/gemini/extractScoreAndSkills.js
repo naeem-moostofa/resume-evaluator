@@ -1,9 +1,8 @@
-import { GoogleGenAI } from "@google/genai";
-
-const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
-
 export default async function handler(req, res) {
     try {
+
+        const { GoogleGenAI } = await import("@google/genai");
+        const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
         const { SYSTEM_INSTRUCTION_SCORE, RESPONSE_SCHEMA_SCORE, SYSTEM_INSTRUCTION_SKILLS,
                 RESPONSE_SCHEMA_SKILLS, fileType, base64pdf } = req.body;
