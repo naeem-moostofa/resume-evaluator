@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";  
 import { supabase } from "./supabaseClient";
-import { GoogleGenAI } from "@google/genai";
 
 const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) => {
 
@@ -196,26 +195,23 @@ const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) =>
         return btoa(bin); // returns base64 string WITHOUT "data:...;base64," prefix
     }
 
-    const embedSkills = async (skillJson) => {
+    const embedSkills = async (skillsJson) => {
 
-        const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
+        const body = {
+            skillsJson
+        }
 
-        const ai = new GoogleGenAI({ apiKey });
+        const res = await fetch("/api/gemini/embedSkills", {
+            method: "POST",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify(body)
+        }) 
 
-        const contents = [skillJson["skills_text"], skillJson["past_experience_text"], skillJson["education_text"]];
+        const resultArray = await res.json(); 
 
-        const result = await ai.models.embedContent({
-            model: "gemini-embedding-001",
-            contents,
-            taskType: "SEMANTIC_SIMILARITY",
-            outputDimensionality: 768
-        })
+        console.log(resultArray);
 
-        const [ skills_vec, experience_vec, education_vec ] = (result.embeddings).map((e) => e.values);
-
-        return [    Array.from(skills_vec),
-                    Array.from(experience_vec),
-                    Array.from(education_vec) ]; 
+        return resultArray;
     }
 
     const onFileChosen = async (e) => {
@@ -223,8 +219,6 @@ const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) =>
         e.target.value = "";
 
         const base64pdf = await fileToBase64(file);
-
-        // console.log(base64pdf);
 
         if (!file) {
             return
@@ -235,7 +229,7 @@ const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) =>
             return;
         }
 
-        const isPdf = file.type == "application/pdf" || file.name.toLowerCase().endsWith(".pdf"); 
+        const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"); 
 
         if (!isPdf) {
             setError("Please upload a PDF file.");
@@ -280,6 +274,7 @@ const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) =>
             if (insertError) {
                 throw insertError;
             }
+
 
             const body = {
                 SYSTEM_INSTRUCTION_SCORE: SYSTEM_INSTRUCTION_SCORE,
