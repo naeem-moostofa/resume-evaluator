@@ -30,7 +30,7 @@ const LandingPage = () => {
                 <div className="intro-art">
                     <img
                     className="intro-img"
-                    src="/images/dashboard.png"
+                    src="/dashboard.png"
                     alt="Product preview placeholder"
                     loading="eager"
                     decoding="async"
@@ -52,7 +52,7 @@ const LandingPage = () => {
                     </p>
                     <img
                         className="card-img"
-                        src="/images/resume-score.png"
+                        src="/resume-score.png"
                         alt="Resume scoring placeholder"
                         loading="lazy"
                         decoding="async"
@@ -69,7 +69,7 @@ const LandingPage = () => {
                     <p></p>
                     <img
                         className="card-img"
-                        src="/images/job-match.png"
+                        src="/job-match.png"
                         alt="Job description matching placeholder"
                         loading="lazy"
                         decoding="async"
