@@ -1,70 +1,29 @@
-# Getting Started with Create React App
+# Resume Evaluator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Description
 
-## Available Scripts
+AI Resume Evaluatorweb app that helps you improve your resume and find your best resume for any job. It’s built with React on the frontend, uses **Supabase** for the backend (Postgres, Storage, and Auth), and is deployed on **Vercel**. Google Gemini is used to extract structured resume data, generate scores and feedback, and create embeddings for matching.
 
-In the project directory, you can run:
+**Key features:**
+- **Upload a resume to get a score and feedback** (problem solving, carrer readiness, readability):  
+ <img width="806" height="906" alt="image" src="https://github.com/user-attachments/assets/9a48149e-e001-40ce-8888-b5de700d4173" />
+ 
+- **Upload/paste a job description and find your best-matching resume(s)** via cosine similarity over stored embeddings.  
+  _Screenshot placeholder:_  
+  `![JobMatch UI](./docs/images/job-match.png)`
 
-### `npm start`
+Additional details:
+- Supabase Auth (email/password or social if enabled) and Row Level Security so users only see their own data.
+- Supabase Storage for raw PDF uploads.
+- Vercel serverless functions for LLM calls and file processing.
+- Embedding vectors cached to minimize re-processing and speed up matching.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## How to Use
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Open the hosted app: **[Add your Vercel link here]**
+2. Sign up or sign in (Supabase Auth).
+3. **Upload a resume (PDF)** and wait for analysis. View the overall score, category scores, and improvement suggestions.
+4. **Paste or upload a job description** to rank your stored resumes by similarity and see quick rationales/missing skills.
+5. Iterate on your resume offline, re-upload, and compare scores to track improvements.
