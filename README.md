@@ -6,7 +6,7 @@ AI Resume Evaluatorweb app that helps you improve your resume and find your best
 
 **Key features:**
 - **Upload a resume to get a score and feedback** (problem solving, carrer readiness, readability):  
- <img width="806" height="906" alt="image" src="https://github.com/user-attachments/assets/9a48149e-e001-40ce-8888-b5de700d4173" />
+<img src="https://github.com/user-attachments/assets/9a48149e-e001-40ce-8888-b5de700d4173" width="400" alt="image" />
  
 - **Upload/paste a job description and find your best-matching resume(s)** via cosine similarity over stored embeddings.  
   _Screenshot placeholder:_  
