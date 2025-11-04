@@ -91,32 +91,6 @@ const signedPdfUrl = async (file_path) => {
   return data?.signedUrl || null;
 }
 
-// const embedSkills = async (skillJson) => {
-
-//   console.log(skillJson)
-
-//   const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-
-//   const ai = new GoogleGenAI({ apiKey });
-
-//   const contents = [skillJson["skills_text"], skillJson["past_experience_text"], skillJson["education_text"]];
-//   console.log(contents);
-//   console.log(ai);
-
-//   const result = await ai.models.embedContent({
-//       model: "gemini-embedding-001",
-//       contents,
-//       taskType: "SEMANTIC_SIMILARITY",
-//       outputDimensionality: 768
-//   })
-
-//   const [ skills_vec, experience_vec, education_vec ] = (result.embeddings).map((e) => e.values);
-
-//   return [    Array.from(skills_vec),
-//               Array.from(experience_vec),
-//               Array.from(education_vec) ]; 
-// }
-
 const embedSkills = async (skillsJson) => {
   const body = {
       skillsJson
@@ -161,10 +135,6 @@ const JobMatch = ({session}) => {
       setExtracted(sections);
 
       const embeddedSkills = await embedSkills(sections);
-
-      // console.log(embeddedSkills);
-
-      // console.log(extracted);
 
       const { data : rows, error: readError } = await supabase.from("Resumes")
         .select("id,title,file_path,user_id,skills_vec,experience_vec,education_vec")

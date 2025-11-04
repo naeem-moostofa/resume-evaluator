@@ -14,57 +14,63 @@ const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) =>
         problem_solving: {
         type: "object",
         additionalProperties: false,
-        required: ["obj"],
+        required: ["obj", "feedback"],
         properties: {
             obj: {
             type: "object",
             additionalProperties: false,
-            required: ["quantified_bullet_points", "star_elements", "acomplishments"],
+            required: ["quantified_bullet_points", "star_elements", "accomplishments"],
             properties: {
                 quantified_bullet_points: { type: "number", minimum: 0, maximum: 10 },
                 star_elements:             { type: "number", minimum: 0, maximum: 10 },
-                acomplishments:            { type: "number", minimum: 0, maximum: 10 }
+                accomplishments:           { type: "number", minimum: 0, maximum: 10 }
             }
-            }
+            },
+            feedback: { type: "string" }
         }
         },
+
         readability_obj: {
         type: "object",
         additionalProperties: false,
-        required: ["obj"],
+        required: ["obj", "feedback"],
         properties: {
             obj: {
             type: "object",
             additionalProperties: false,
-            required: ["sectioning", "action_verbs", "conciseness_and_cinsistency", "ATS_friendly"],
+            required: ["sectioning", "action_verbs", "conciseness_and_consistency", "ATS_friendly"],
             properties: {
-                sectioning:                  { type: "number", minimum: 0, maximum: 10 },
-                action_verbs:                { type: "number", minimum: 0, maximum: 10 },
-                conciseness_and_cinsistency: { type: "number", minimum: 0, maximum: 10 },
-                ATS_friendly:                { type: "number", minimum: 0, maximum: 10 }
+                sectioning:                   { type: "number", minimum: 0, maximum: 10 },
+                action_verbs:                 { type: "number", minimum: 0, maximum: 10 },
+                conciseness_and_consistency:  { type: "number", minimum: 0, maximum: 10 },
+                ATS_friendly:                 { type: "number", minimum: 0, maximum: 10 }
             }
-            }
+            },
+            feedback: { type: "string" }
         }
         },
+
         career_ready_obj: {
         type: "object",
         additionalProperties: false,
-        required: ["obj"],
+        required: ["obj", "feedback"],
         properties: {
             obj: {
             type: "object",
             additionalProperties: false,
-            required: ["teamwork_and_leadership", "communication", "professionalisum_and_initaitive"],
+            required: ["teamwork_and_leadership", "communication", "professionalism_and_initiative"],
             properties: {
-                teamwork_and_leadership:        { type: "number", minimum: 0, maximum: 10 },
-                communication:                  { type: "number", minimum: 0, maximum: 10 },
-                professionalisum_and_initaitive:{ type: "number", minimum: 0, maximum: 10 }
+                teamwork_and_leadership:       { type: "number", minimum: 0, maximum: 10 },
+                communication:                 { type: "number", minimum: 0, maximum: 10 },
+                professionalism_and_initiative:{ type: "number", minimum: 0, maximum: 10 }
             }
-            }
+            },
+            feedback: { type: "string" }
         }
         }
     }
     };
+
 
     const RESPONSE_SCHEMA_SKILLS = {
         type: "object",
@@ -81,7 +87,7 @@ const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) =>
         "problem_solving": {
             "obj": {
             "star_elements": 0,
-            "acomplishments": 0,
+            "accomplishments": 0,
             "quantified_bullet_points": 0
             }
         },
@@ -90,14 +96,14 @@ const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) =>
             "sectioning": 0,
             "ATS_friendly": 0,
             "action_verbs": 0,
-            "conciseness_and_cinsistency": 0
+            "conciseness_and_consistency": 0
             }
         },
         "career_ready_obj": {
             "obj": {
             "communication": 0,
             "teamwork_and_leadership": 0,
-            "professionalisum_and_initaitive": 0
+            "professionalism_and_initiative": 0
             }
         }
         };
@@ -137,18 +143,21 @@ const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) =>
         - quantified_bullet_points: Fraction of bullets that include numeric outcomes (%, $, counts, time, rates), scaled to 0–10.
         Examples of numeric signals: “increased by 20%”, “reduced 3 ms latency”, “cut cost $15k/year”, “served 120 users”.
         - star_elements: Coverage of STAR elements across bullets. Count bullets with at least TWO of {Situation, Task, Action} AND at least one explicit Result. Convert coverage ratio to 0–10.
-        - acomplishments: Degree to which bullets emphasize outcomes and impact vs. duties. Reward specificity, metrics, scope, constraints, and problem framing.
+        - accomplishments: Degree to which bullets emphasize outcomes and impact vs. duties. Reward specificity, metrics, scope, constraints, and problem framing.
+        - feedback: Give a few sentences on what the resume could improve for this section, include specific examples and suggestions
 
         readability_obj.obj
         - sectioning: Presence and clarity of standard sections (e.g., Experience, Education, Projects/Skills). Logical order, clear headings, and scan-friendly layout (single column text is fine).
         - action_verbs: Fraction of bullets that start with a strong action verb (e.g., Built, Led, Designed, Reduced, Shipped). Penalize “Responsible for/Assisted with” beginnings. Convert ratio to 0–10.
-        - conciseness_and_cinsistency: One-sentence bullets where reasonable; parallel structure; consistent tense and punctuation; minimal fluff.
-        - ATS_friendly: Plain, parseable text (no crucial text inside images/tables), standard headings, simple symbols, consistent formatting that common ATS can parse.
+        - conciseness_and_consistency: One-sentence bullets where reasonable; parallel structure; consistent tense and punctuation; minimal fluff.
+        - ATS_friendly: Plain, parsable text (no crucial text inside images/tables), standard headings, simple symbols, consistent formatting that common ATS can parse.
+        - feedback: Give a few sentences on what the resume could improve for this section, include specific examples and suggestions
 
         career_ready_obj.obj
         - teamwork_and_leadership: Concrete evidence of collaboration, cross-functional work, mentorship, stakeholder management, ownership of deliverables.
         - communication: Evidence of presenting, documenting, simplifying complex ideas, or communicating results to specific audiences.
-        - professionalisum_and_initaitive: Reliability, follow-through, bias for action, self-directed projects, taking ownership beyond assigned tasks.
+        - professionalism_and_initiative: Reliability, follow-through, bias for action, self-directed projects, taking ownership beyond assigned tasks.
+        - feedback: Give a few sentences on what the resume could improve for this section, include specific examples and suggestions
 
         OUTPUT FORMAT (STRICT):
         Return ONLY a JSON object with EXACTLY these keys and structure. Use numbers 0–10 (one decimal allowed). No trailing commas.
@@ -158,23 +167,26 @@ const DashboardNav = ({ session, error, setError, maxFileSizeMB, setResumes}) =>
             "obj": {
             "quantified_bullet_points": <number 0-10>,
             "star_elements": <number 0-10>,
-            "acomplishments": <number 0-10>
-            }
+            "accomplishments": <number 0-10>
+            },
+            "feedback": "string"
         },
         "readability_obj": {
             "obj": {
             "sectioning": <number 0-10>,
             "action_verbs": <number 0-10>,
-            "conciseness_and_cinsistency": <number 0-10>,
+            "conciseness_and_consistency": <number 0-10>,
             "ATS_friendly": <number 0-10>
-            }
+            },
+            "feedback": "string"
         },
         "career_ready_obj": {
             "obj": {
             "teamwork_and_leadership": <number 0-10>,
             "communication": <number 0-10>,
-            "professionalisum_and_initaitive": <number 0-10>
-            }
+            "professionalism_and_initiative": <number 0-10>
+            },
+            "feedback": "string"
         }
         }
         `.trim();

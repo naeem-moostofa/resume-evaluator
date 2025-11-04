@@ -87,17 +87,22 @@ const ViewResume = ({ session }) => {
     function formatCategories(score = {}) {
         
         const problem_solving_obj = score.problem_solving?.obj || {};
-        const career_ready_obj    = score.career_ready_obj?.obj || {};
-        const readability_obj     = score.readability_obj?.obj || {};
+        const problem_solving_feedback = score.problem_solving?.feedback || "";
+    
+        const career_ready_obj = score.career_ready_obj?.obj || {};
+        const career_ready_feedback = score.career_ready_obj?.feedback || "";
+
+        const readability_obj = score.readability_obj?.obj || {};
+        const readability_feedback = score.readability_obj?.feedback || "";
 
         const ps = buildSubsAndAvg(problem_solving_obj);
         const cr = buildSubsAndAvg(career_ready_obj);
         const rd = buildSubsAndAvg(readability_obj);
 
         return [
-        { key: "problem_solving", label: "Problem Solving", avg: ps.avg, subs: ps.subs },
-        { key: "career_ready",    label: "Career Ready",    avg: cr.avg, subs: cr.subs },
-        { key: "readability",     label: "Readability",     avg: rd.avg, subs: rd.subs },
+        { key: "problem_solving", label: "Problem Solving", avg: ps.avg, subs: ps.subs, feedback: problem_solving_feedback },
+        { key: "career_ready",    label: "Career Ready",    avg: cr.avg, subs: cr.subs, feedback: career_ready_feedback },
+        { key: "readability",     label: "Readability",     avg: rd.avg, subs: rd.subs, feedback: readability_feedback },
         ];
     }
 
@@ -188,9 +193,9 @@ const ViewResume = ({ session }) => {
                         <div className="vr-score-head">
                             <h3 className="vr-score-label">{c.label}</h3>
                             {typeof c.avg === "number" ? (
-                            <div className="vr-score-avg">{c.avg}</div>
+                                <div className="vr-score-avg">{c.avg}</div>
                             ) : (
-                            <div className="vr-score-avg vr-score-na">–</div>
+                                <div className="vr-score-avg vr-score-na">–</div>
                             )}
                         </div>
 
@@ -204,6 +209,16 @@ const ViewResume = ({ session }) => {
                             ))}
                             </div>
                         )}
+
+                        <p style={{
+                            marginTop: "14px",
+                            paddingTop: "12px",
+                            borderTop: "1px solid rgba(255,255,255,0.18)",
+                            whiteSpace: "pre-wrap",
+                            lineHeight: 1.5
+                        }}>
+                            {c?.feedback}
+                        </p>
                         </article>
                     ))}
                 </section>
