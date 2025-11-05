@@ -21,7 +21,9 @@ Additional details:
 ## How to Use
 
 Try it at: https://airesume-evaluator.vercel.app/
-2. Sign up or sign in (Supabase Auth).
-3. **Upload a resume (PDF)** and wait for analysis. View the overall score, category scores, and improvement suggestions.
-4. **Paste or upload a job description** to rank your stored resumes by similarity and see quick rationales/missing skills.
-5. Iterate on your resume offline, re-upload, and compare scores to track improvements.
+
+
+To use locally:
+
+1. Clone the repository
+2. Create a .env file with `REACT_APP_SUPABASE_URL`
