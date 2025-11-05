@@ -13,16 +13,14 @@ AI Resume Evaluatorweb app that helps you improve your resume and find your best
 
 
 Additional details:
-- Supabase Auth (email/password or social if enabled) and Row Level Security so users only see their own data.
-- Supabase Storage for raw PDF uploads.
-- Vercel serverless functions for LLM calls and file processing.
-- Embedding vectors cached to minimize re-processing and speed up matching.
+- Supabase is used for authentical allowing users to login or sign up with an email and password. Row Level Security is enabled to ensure only sueres can see their data.
+- Vercel serverless functions are used for LLM processing through the Gemini API 
 
 ---
 
 ## How to Use
 
-1. Open the hosted app: **[Add your Vercel link here]**
+Try it at: https://airesume-evaluator.vercel.app/
 2. Sign up or sign in (Supabase Auth).
 3. **Upload a resume (PDF)** and wait for analysis. View the overall score, category scores, and improvement suggestions.
 4. **Paste or upload a job description** to rank your stored resumes by similarity and see quick rationales/missing skills.
