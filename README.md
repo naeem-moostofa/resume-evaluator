@@ -4,6 +4,7 @@
 ![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?logo=vercel&logoColor=white)
 ![Google Gemini](https://img.shields.io/badge/LLM-Google%20Gemini-blue?logo=google&logoColor=white)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fairesume-evaluator.vercel.app)](https://airesume-evaluator.vercel.app)
+![License](https://img.shields.io/github/license/naeem-moostofa/resume-evaluator)
 
 AI Powered Resume Evaluator.
 
