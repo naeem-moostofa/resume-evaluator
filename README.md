@@ -5,12 +5,12 @@
 AI Resume Evaluatorweb app that helps you improve your resume and find your best resume for any job. It’s built with React on the frontend, uses **Supabase** for the backend (Postgres, Storage, and Auth), and is deployed on **Vercel**. Google Gemini is used to extract structured resume data, generate scores and feedback, and create embeddings for matching.
 
 **Key features:**
-- **Upload a resume to get a score and feedback** (problem solving, carrer readiness, readability):  
+- **Upload a resume to get a score and feedback** A score is given to each of the three categories: problem solving, carrer readiness, and readability; each of which are further broken down into sub scores. Specific feedback is also given for each of the three sections. All of this is done through one Gemini API call.   
 <img src="https://github.com/user-attachments/assets/9a48149e-e001-40ce-8888-b5de700d4173" width="400" alt="image" />
  
-- **Upload/paste a job description and find your best-matching resume(s)** via cosine similarity over stored embeddings.  
-  _Screenshot placeholder:_  
-  `![JobMatch UI](./docs/images/job-match.png)`
+- **Upload/paste a job description and find your best-matching resume(s)** When each resume is uploaded key sections are extracted and embedded using the Gemini API. Similarly, when a job description is uploaded the same key sections are extracted and embdedded. Then, resumes are ranked using a mean cosine similarity for each section. This allows quick comparison with resumes and works best when users have many resumes and are applying to many jobs.  
+<img src="https://github.com/user-attachments/assets/c61acf00-870f-4f3a-b414-c15ac985e6f7" width="400" alt="image" />
+
 
 Additional details:
 - Supabase Auth (email/password or social if enabled) and Row Level Security so users only see their own data.
