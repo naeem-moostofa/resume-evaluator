@@ -1,4 +1,8 @@
 # Resume Evaluator
+![React](https://img.shields.io/badge/React-18+-informational?logo=react&logoColor=white&color=61dafb)
+![Supabase](https://img.shields.io/badge/Supabase-Backend%20%2F%20Auth-success?logo=supabase&logoColor=white&color=3ecf8e)
+![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?logo=vercel&logoColor=white)
+![Google Gemini](https://img.shields.io/badge/LLM-Google%20Gemini-blue?logo=google&logoColor=white)
 AI Powered Resume Evaluator.
 
 ## Project Description
