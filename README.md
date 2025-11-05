@@ -26,4 +26,4 @@ Try it at: https://airesume-evaluator.vercel.app/
 To use locally:
 
 1. Clone the repository
-2. Create a .env file with `REACT_APP_SUPABASE_URL`
+2. Create a .env file with `REACT_APP_SUPABASE_URL`, `REACT_APP_SUPABASE_ANON_KEY`, and `GEMINI_API_KEY`. Your supabase project should have a table called Resumes and columns for: id, user_id, title, file_path, created_at, analysis_status, score, skills_vec, experience_vec, education vec. There should also be a storage bucked called resumepdfs.
