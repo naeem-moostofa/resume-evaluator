@@ -1,4 +1,5 @@
 # Resume Evaluator
+AI Powered Resume Evaluator.
 
 ## Project Description
 
