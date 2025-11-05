@@ -3,6 +3,8 @@
 ![Supabase](https://img.shields.io/badge/Supabase-Backend%20%2F%20Auth-success?logo=supabase&logoColor=white&color=3ecf8e)
 ![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?logo=vercel&logoColor=white)
 ![Google Gemini](https://img.shields.io/badge/LLM-Google%20Gemini-blue?logo=google&logoColor=white)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fairesume-evaluator.vercel.app)](https://airesume-evaluator.vercel.app)
+
 AI Powered Resume Evaluator.
 
 ## Project Description
